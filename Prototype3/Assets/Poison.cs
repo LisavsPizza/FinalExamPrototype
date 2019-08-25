@@ -67,7 +67,7 @@ public class Poison : MonoBehaviour
             GameObject healthCanvas = Utilities.SearchChild("HealthCanvas", currCharacter.gameObject);
             GameObject healthBar = Utilities.SearchChild("HealthBar", healthCanvas);
 
-            healthBar.GetComponent<HealthBar>().ChangeHealth(poisonCount);
+            healthBar.GetComponent<HealthBar>().ChangeHealth(-poisonCount);
 
             //Divide poison damage by two, rounded down to smallest integer
             float poisonCountFloat = (float)poisonCount;

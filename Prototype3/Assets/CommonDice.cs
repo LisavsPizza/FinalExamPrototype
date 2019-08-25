@@ -54,6 +54,7 @@ public class CommonDice : MonoBehaviour
 
         if (diceRoll == 1)
         {
+            DiceManager.DisableAllButtons();
             GameObject.Find("ConfirmAttackButton").GetComponent<CustomButton>().Disable();
             GameObject.Find("AttackMissed").GetComponent<BillboardMessage>().ShowMessage();
         }

@@ -78,6 +78,8 @@ public class EnemyAI : MonoBehaviour
         _firstRollTaken = false;
         _executeEnemyAI = true;
         _startTimer = true;
+
+        Debug.Log("EXECUTE ENEMY AI CALLED");
     }
 
     public void CeaseEnemyAI()

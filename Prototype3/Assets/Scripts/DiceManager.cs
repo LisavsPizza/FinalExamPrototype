@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class DiceManager : MonoBehaviour
 {
@@ -156,7 +157,7 @@ public class DiceManager : MonoBehaviour
                 GameObject healthCanvasChar = Utilities.SearchChild("HealthCanvas", currCharacter.gameObject);
                 GameObject healthBarChar = Utilities.SearchChild("HealthBar", healthCanvasChar);
 
-                healthBar.GetComponent<HealthBar>().ChangeHealth(Mathf.Abs(excess));
+                healthBarChar.GetComponent<HealthBar>().ChangeHealth(Mathf.Abs(excess));
             }
 
 
@@ -222,17 +223,26 @@ public class DiceManager : MonoBehaviour
             g.transform.GetChild(0).GetComponent<Text>().text = "0";
             g.transform.GetChild(0).GetComponent<Text>().enabled = false;
         }
+
+        DiceManager.ResetRollValues();
     }
 
     public static GameObject FindEmptyTypeTotal()
     {
         GameObject firstEmptyType = null;
 
-        foreach (GameObject g in GameObject.FindGameObjectsWithTag("TypeTotal"))
+        List<GameObject> allTypeTotals = GameObject.FindGameObjectsWithTag("TypeTotal").ToList<GameObject>();
+
+        var sortedList = allTypeTotals.OrderBy(go => go.name).ToList();
+
+        foreach (GameObject g in sortedList)
         {
-            if (g.GetComponent<Text>().text.Equals(""))
+            if (firstEmptyType == null)
             {
-                firstEmptyType = g;
+                if (g.GetComponent<Text>().text.Equals(""))
+                {
+                    firstEmptyType = g;
+                }
             }
         }
 

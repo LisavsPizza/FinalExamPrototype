@@ -18,7 +18,7 @@ public class AttackMissedMessage : MonoBehaviour
 
     public void OnAttackMissed()
     {
-        DiceManager.DisableAllButtons();
+        GameObject.Find("ConfirmAttackButton").GetComponent<ConfirmAttackButton>().HideUI();
 
         if (TurnManager.GetCurrTurnCharacter().tag.Contains("Enemy"))
         {

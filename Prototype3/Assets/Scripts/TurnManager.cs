@@ -77,8 +77,9 @@ public class TurnManager : MonoBehaviour
 
         _currTurnCharacter = startingChar;
 
-        _currTurnCharacter.GetComponent<Character>().ChangeDiceType();
+
         _currTurnCharacter.GetComponent<Character>().SetMyTurn();
+        _currTurnCharacter.GetComponent<Character>().ChangeDiceType();
     }
 
     public void SetTurnOrder()
@@ -122,6 +123,8 @@ public class TurnManager : MonoBehaviour
 
     public static void NextTurn()
     {
+        Utilities.SearchChild("TurnArrow", _currTurnCharacter).GetComponent<SpriteRenderer>().enabled = false;
+
         if (_currChar < _charactersInCombat.Count-1)
         {
             _currChar++;
@@ -131,6 +134,15 @@ public class TurnManager : MonoBehaviour
         }
 
         _currTurnCharacter = _charactersInCombat[_currChar];
+
+        if (GetCurrTurnCharacter().tag.Contains("Player"))
+        {
+            GameObject.Find("ConfirmAttackButton").GetComponent<SpriteRenderer>().enabled = true;
+        }
+        else
+        {
+            GameObject.Find("ConfirmAttackButton").GetComponent<SpriteRenderer>().enabled = false;
+        }
 
         Dice.ResetNumDiceStopped();
 
@@ -144,7 +156,8 @@ public class TurnManager : MonoBehaviour
     }
 
     public static void FinishAttack()
-    {
+    { GameObject.Find("ConfirmAttackButton").GetComponent<ConfirmAttackButton>().HideUI();
+
         Debug.Log("FINISHED ATTACK");
         DiceManager.GetCurrCharacter().SetTurnFinished();
         DiceManager.CurrCombatStage = DiceManager.CombatStage.ChangingTurns;

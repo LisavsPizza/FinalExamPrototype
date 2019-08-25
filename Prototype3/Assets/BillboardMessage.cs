@@ -43,7 +43,6 @@ public class BillboardMessage : MonoBehaviour
             {
                 _fill = false;
                 _wait = true;
-                m_OnMessageHidden.Invoke();
             }
         } else if (_wait)
         {
@@ -61,6 +60,7 @@ public class BillboardMessage : MonoBehaviour
                     _wait = false;
                     _timer = 0f;
                     this.GetComponent<Image>().enabled = false;
+                    m_OnMessageHidden.Invoke();
                 }
             }
         }

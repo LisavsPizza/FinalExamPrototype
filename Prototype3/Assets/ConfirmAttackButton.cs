@@ -16,10 +16,21 @@ public class ConfirmAttackButton : MonoBehaviour
 
     private Vector3 _originalPos;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    private GameObject _uiPlayer;
+    private GameObject _uiSkinPlayer;
+    private GameObject _uiEnemy;
+    private GameObject _uiSkinEnemy;
 
+    // Start is called before the first frame update
+    void Awake()
+    {
+        _uiPlayer = GameObject.Find("UIPlayer");
+        _uiSkinPlayer = GameObject.Find("UISkinPlayer");
+        _uiEnemy = GameObject.Find("UIEnemy");
+        _uiSkinEnemy = GameObject.Find("UISkinEnemy");
+
+        _uiEnemy.SetActive(false);
+        _uiSkinEnemy.SetActive(false);
     }
 
     // Update is called once per frame
@@ -115,6 +126,40 @@ public class ConfirmAttackButton : MonoBehaviour
             DiceManager.CurrCombatStage = DiceManager.CombatStage.ExecutingAttack;
 
             GameObject diceCanvas = GameObject.Find("DiceCanvas");
+        }
+    }
+
+    public void HideUI()
+    {
+        DiceManager.ClearAllDiceTotals();
+
+        if (TurnManager.GetCurrTurnCharacter().tag.Contains("Player"))
+        {
+            _uiSkinPlayer.SetActive(false);
+            _uiPlayer.SetActive(false);
+
+            this.GetComponent<SpriteRenderer>().enabled = false;
+        }
+        else
+        {
+            _uiSkinEnemy.SetActive(false);
+            _uiEnemy.SetActive(false);
+        }
+    }
+
+    public void ShowUI()
+    {
+        if (TurnManager.GetCurrTurnCharacter().tag.Contains("Player"))
+        {
+            _uiSkinPlayer.SetActive(true);
+            _uiPlayer.SetActive(true);
+
+            this.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        else
+        {
+            _uiSkinEnemy.SetActive(true);
+            _uiEnemy.SetActive(true);
         }
     }
 }

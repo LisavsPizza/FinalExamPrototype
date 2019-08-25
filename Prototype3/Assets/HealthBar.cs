@@ -32,5 +32,7 @@ public class HealthBar : MonoBehaviour
         }
 
         this.GetComponent<Image>().fillAmount = currHealth / maxHealth;
+
+        Utilities.SearchChild("HP", this.transform.parent.gameObject).GetComponent<Text>().text = character.GetComponent<Character>().GetCurrHP() + "/" + character.GetComponent<Character>().hp;
     }
 }

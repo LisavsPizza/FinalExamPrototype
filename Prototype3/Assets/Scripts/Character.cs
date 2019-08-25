@@ -26,10 +26,6 @@ public class Character : MonoBehaviour
 
     private bool _diceChanged;
 
-    private float _changeTurnsTime = 2f;
-    private bool _startChangeTurnsTimer;
-    private float _changeTurnsTimer;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -39,30 +35,21 @@ public class Character : MonoBehaviour
 
         _isSelected = false;
 
-        _startChangeTurnsTimer = false;
-        _changeTurnsTimer = _changeTurnsTime;
+        GameObject healthCanvasChar = Utilities.SearchChild("HealthCanvas", this.gameObject);
+
+        Utilities.SearchChild("HP", healthCanvasChar).GetComponent<Text>().text = this.GetComponent<Character>().GetCurrHP() + "/" + this.GetComponent<Character>().hp;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_startChangeTurnsTimer)
-        {
-            _changeTurnsTimer += Time.deltaTime;
-            if (_changeTurnsTimer >= _changeTurnsTime)
-            {
-                ApplyStatusEffects();
-                DiceManager.CurrCombatStage = DiceManager.CombatStage.DiceAndTargets;
-
-                _startChangeTurnsTimer = false;
-                _changeTurnsTimer = 0f;
-            }
-        }
     }
 
     public void SetMyTurn()
     {
         _isSelected = false;
+
+        GameObject.Find("ConfirmAttackButton").GetComponent<ConfirmAttackButton>().ShowUI();
 
         GameObject characterInfoCanvas = GameObject.Find("CharacterInfoCanvas");
         GameObject statsCanvas = GameObject.Find("StatsCanvas");
@@ -70,11 +57,13 @@ public class Character : MonoBehaviour
         Utilities.SearchChild("Name", characterInfoCanvas).GetComponent<Text>().text = myName;
         Utilities.SearchChild("Image", characterInfoCanvas).GetComponent<Image>().sprite = characterImage;
 
-        Utilities.SearchChild("Health", statsCanvas).GetComponent<Text>().text = _currHP + "/" + hp.ToString();
-
         //*where dice total clear was
 
         DiceManager.SetCurrCharacter(this);
+
+        DiceManager.ClearAllDiceTotals();
+
+
         DiceManager.ClearTargets();
 
             if (!TurnManager.GetCurrTurnCharacter().tag.Contains("Enemy"))
@@ -98,11 +87,15 @@ public class Character : MonoBehaviour
             DiceManager.EnableAllButtons();
         }
 
+        Utilities.SearchChild("TurnArrow", this.gameObject).GetComponent<SpriteRenderer>().enabled = true;
+
+        //DiceManager.SetCanReset(true);
+
+        ChangeDiceType();
         DiceManager.ClearAllDiceTotals();
 
-        DiceManager.SetCanReset(true);
-
-        _startChangeTurnsTimer = true;
+        ApplyStatusEffects();
+        DiceManager.CurrCombatStage = DiceManager.CombatStage.DiceAndTargets;
     }
 
     public float GetInitiative()
