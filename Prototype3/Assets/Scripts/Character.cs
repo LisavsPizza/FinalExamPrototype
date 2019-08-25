@@ -26,6 +26,10 @@ public class Character : MonoBehaviour
 
     private bool _diceChanged;
 
+    private float _changeTurnsTime = 2f;
+    private bool _startChangeTurnsTimer;
+    private float _changeTurnsTimer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,12 +38,26 @@ public class Character : MonoBehaviour
         _currHP = hp;
 
         _isSelected = false;
+
+        _startChangeTurnsTimer = false;
+        _changeTurnsTimer = _changeTurnsTime;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (_startChangeTurnsTimer)
+        {
+            _changeTurnsTimer += Time.deltaTime;
+            if (_changeTurnsTimer >= _changeTurnsTime)
+            {
+                ApplyStatusEffects();
+                DiceManager.CurrCombatStage = DiceManager.CombatStage.DiceAndTargets;
 
+                _startChangeTurnsTimer = false;
+                _changeTurnsTimer = 0f;
+            }
+        }
     }
 
     public void SetMyTurn()
@@ -57,7 +75,6 @@ public class Character : MonoBehaviour
         //*where dice total clear was
 
         DiceManager.SetCurrCharacter(this);
-        DiceManager.CurrCombatStage = DiceManager.CombatStage.DiceAndTargets;
         DiceManager.ClearTargets();
 
             if (!TurnManager.GetCurrTurnCharacter().tag.Contains("Enemy"))
@@ -84,6 +101,8 @@ public class Character : MonoBehaviour
         DiceManager.ClearAllDiceTotals();
 
         DiceManager.SetCanReset(true);
+
+        _startChangeTurnsTimer = true;
     }
 
     public float GetInitiative()
@@ -180,5 +199,13 @@ public class Character : MonoBehaviour
         diceCanvas.transform.GetChild(0).GetComponent<Dice>().ChangeDice(dice1Type);
         diceCanvas.transform.GetChild(1).GetComponent<Dice>().ChangeDice(dice2Type);
         diceCanvas.transform.GetChild(2).GetComponent<Dice>().ChangeDice(dice3Type);
+    }
+
+    private void ApplyStatusEffects()
+    {
+        GameObject poisonCanvas = Utilities.SearchChild("PoisonCanvas", this.gameObject);
+        GameObject poison = Utilities.SearchChild("PoisonImage", poisonCanvas);
+
+        poison.GetComponent<Poison>().DealPoisonDamage();
     }
 }

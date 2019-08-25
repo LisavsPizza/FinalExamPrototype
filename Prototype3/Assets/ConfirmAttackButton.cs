@@ -63,6 +63,17 @@ public class ConfirmAttackButton : MonoBehaviour
 
                     Character currChar = DiceManager.GetCurrCharacter();
                     DiceManager.ExecuteAttack();
+
+                    for (int i = 0; i < GameObject.Find("DiceCanvas").transform.childCount; i++)
+                    {
+                        GameObject currChild = GameObject.Find("DiceCanvas").transform.GetChild(i).gameObject;
+
+                        if (currChild.activeInHierarchy)
+                        {
+                            currChild.GetComponent<Dice>().InvokeOnAttackEvent();
+                        }
+                    }
+
                     _hasPlayedAttackAnim = true;
                 }
             }
@@ -104,10 +115,6 @@ public class ConfirmAttackButton : MonoBehaviour
             DiceManager.CurrCombatStage = DiceManager.CombatStage.ExecutingAttack;
 
             GameObject diceCanvas = GameObject.Find("DiceCanvas");
-
-            diceCanvas.transform.GetChild(0).GetComponent<Dice>().InvokeOnAttackEvent();
-            diceCanvas.transform.GetChild(1).GetComponent<Dice>().InvokeOnAttackEvent();
-            diceCanvas.transform.GetChild(2).GetComponent<Dice>().InvokeOnAttackEvent();
         }
     }
 }

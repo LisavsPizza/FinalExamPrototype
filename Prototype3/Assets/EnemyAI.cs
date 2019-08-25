@@ -22,6 +22,8 @@ public class EnemyAI : MonoBehaviour
         _executeEnemyAI = false;
         _diceNum = 0;
         _firstRollTaken = false;
+
+        _timer = 0.0f;
     }
 
     // Update is called once per frame
