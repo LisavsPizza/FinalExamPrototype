@@ -62,4 +62,10 @@ public class MyImage : MonoBehaviour
     {
         _fadeOut = true;
     }
+
+    public void ChangeSprite(Sprite s)
+    {
+        this.GetComponent<SpriteRenderer>().sprite = s;
+        //this.GetComponent<SpriteRenderer>().color = Color.clear;
+    }
 }
