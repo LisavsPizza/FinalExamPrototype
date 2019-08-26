@@ -233,7 +233,15 @@ public class DialogueBox : MonoBehaviour
                 print("!!!SPEAKING CHARACTER IS NOT IN THE SCENE");
             }
 
-            if (currNode.HasChoice())
+            if (currSpeakingCharacter.Equals("Ayanda"))
+            {
+                GameObject.Find("AyandaImage").GetComponent<Image>().enabled = true;
+            } else
+            {
+                GameObject.Find("AyandaImage").GetComponent<Image>().enabled = false;
+            }
+
+                if (currNode.HasChoice())
             {
                 int numChoices = currNode.GetChoiceList().Count;
 
