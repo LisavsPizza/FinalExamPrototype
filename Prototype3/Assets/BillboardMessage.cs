@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 public class BillboardMessage : MonoBehaviour
 {
+    public UnityEvent m_OnMessageShown;
     public UnityEvent m_OnMessageHidden;
 
     public float fillRate = 0.1f;
@@ -28,6 +29,11 @@ public class BillboardMessage : MonoBehaviour
         if (m_OnMessageHidden == null)
         {
             m_OnMessageHidden = new UnityEvent();
+        }
+
+        if (m_OnMessageShown == null)
+        {
+            m_OnMessageShown = new UnityEvent();
         }
     }
 
@@ -74,6 +80,7 @@ public class BillboardMessage : MonoBehaviour
         //    GameObject.Find("DiceCanvas").transform.GetChild(j).gameObject.GetComponent<ShakeObject>().StopShaking();
         //}
 
+        m_OnMessageShown.Invoke();
 
         _fill = true;
         _wait = true;

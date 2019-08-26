@@ -63,6 +63,8 @@ public class DiceManager : MonoBehaviour
 
             if (_timer <= 0)
             {
+                GameObject.Find("ConfirmAttackButton").GetComponent<ConfirmAttackButton>().ShowUI();
+
                 for (int i = 0; i < GameObject.Find("DiceCanvas").transform.childCount; i++)
                 {
                     if (GameObject.Find("DiceCanvas").transform.GetChild(i).gameObject.activeInHierarchy)
@@ -144,24 +146,27 @@ public class DiceManager : MonoBehaviour
     {
         foreach (Character c in _currTargets)
         {
-            int damage = int.Parse(DiceManager.FindTypeTotalGameObject("AP").transform.GetChild(0).GetComponent<Text>().text);
-
-            GameObject healthCanvas = Utilities.SearchChild("HealthCanvas", c.gameObject);
-            GameObject healthBar = Utilities.SearchChild("HealthBar", healthCanvas);
-
-            float excess = c.GetComponent<Character>().GetCurrHP() - damage;
-
-            if (excess < 0)
+            if (DiceManager.FindTypeTotalGameObject("AP") != null)
             {
-                GameObject currCharacter = TurnManager.GetCurrTurnCharacter().GetComponent<Character>().gameObject;
-                GameObject healthCanvasChar = Utilities.SearchChild("HealthCanvas", currCharacter.gameObject);
-                GameObject healthBarChar = Utilities.SearchChild("HealthBar", healthCanvasChar);
+                int damage = int.Parse(DiceManager.FindTypeTotalGameObject("AP").transform.GetChild(0).GetComponent<Text>().text);
 
-                healthBarChar.GetComponent<HealthBar>().ChangeHealth(Mathf.Abs(excess));
+                GameObject healthCanvas = Utilities.SearchChild("HealthCanvas", c.gameObject);
+                GameObject healthBar = Utilities.SearchChild("HealthBar", healthCanvas);
+
+                float excess = c.GetComponent<Character>().GetCurrHP() - damage;
+
+                if (excess < 0)
+                {
+                    GameObject currCharacter = TurnManager.GetCurrTurnCharacter().GetComponent<Character>().gameObject;
+                    GameObject healthCanvasChar = Utilities.SearchChild("HealthCanvas", currCharacter.gameObject);
+                    GameObject healthBarChar = Utilities.SearchChild("HealthBar", healthCanvasChar);
+
+                    healthBarChar.GetComponent<HealthBar>().ChangeHealth(Mathf.Abs(excess));
+                }
+
+
+                healthBar.GetComponent<HealthBar>().ChangeHealth(-damage);
             }
-
-
-            healthBar.GetComponent<HealthBar>().ChangeHealth(-damage);
         }
     }
 

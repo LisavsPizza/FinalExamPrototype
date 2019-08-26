@@ -84,7 +84,7 @@ public class Dice : MonoBehaviour
         if (myDiceType != null)
         {
             this.gameObject.SetActive(true);
-            this.GetComponent<Image>().sprite = myDiceType.GetImage();
+            this.GetComponent<Animator>().runtimeAnimatorController = myDiceType.GetAnimationController();
             m_OnDiceStopped = myDiceType.GetOnStoppedEvent();
             m_OnAttack = myDiceType.GetOnAttackEvent();
             m_OnStatusEffect = myDiceType.GetOnStatusEvent();
@@ -113,6 +113,7 @@ public class Dice : MonoBehaviour
 
             if (!DiceManager.GetCurrCharacter().tag.Contains("Enemy"))
             {
+                AudioManager.PlaySound(Resources.Load("Dice roll") as AudioClip);
                 m_OnDiceStopped.Invoke();
             }
 
@@ -151,6 +152,7 @@ public class Dice : MonoBehaviour
             string questionMarkName = "QuestionMark" + this.name.ToCharArray()[this.name.Length - 1];
             GameObject.Find(questionMarkName).GetComponent<Image>().enabled = false;
 
+            AudioManager.PlaySound(Resources.Load("Dice roll") as AudioClip);
             m_OnDiceStopped.Invoke();
 
             this.GetComponent<Button>().enabled = false;
@@ -207,7 +209,7 @@ public class Dice : MonoBehaviour
         }
     }
 
-    private void ResetDice()
+    public void ResetDice()
     {
         //Reset position
         this.GetComponent<ShakeObject>().StopShaking();
@@ -218,6 +220,7 @@ public class Dice : MonoBehaviour
         //Start shaking
         this.GetComponent<ShakeObject>().Shake();
         _stopped = false;
+        this.GetComponent<Animator>().enabled = true;
 
         //Re-enable buttons if the current character is not an enemy
         if (!TurnManager.GetCurrTurnCharacter().tag.Contains("Enemy"))

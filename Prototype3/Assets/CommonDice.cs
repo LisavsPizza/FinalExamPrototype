@@ -24,6 +24,8 @@ public class CommonDice : MonoBehaviour
 
         GameObject.Find("ClickTheDice").GetComponent<Text>().text = "DICE VALUES: ";
 
+        FreezeOnRoll(diceRoll);
+
         if (DiceManager.APFound() == false)
         {
 
@@ -58,6 +60,27 @@ public class CommonDice : MonoBehaviour
             GameObject.Find("ConfirmAttackButton").GetComponent<CustomButton>().Disable();
             GameObject.Find("AttackMissed").GetComponent<BillboardMessage>().ShowMessage();
         }
+    }
+
+    private void FreezeOnRoll(int num)
+    {
+        Dice.LastDiceClicked().GetComponent<Animator>().enabled = false;
+
+        DiceType myDiceType = DiceManager.SearchDiceType("Common");
+
+        List<Sprite> freezeSprites = myDiceType.GetFreezeSprites();
+
+        Sprite freezeSprite = null;
+
+        foreach (Sprite s in freezeSprites)
+        {
+            if (s.name.Contains(num.ToString()))
+            {
+                freezeSprite = s;
+            }
+        }
+
+        Dice.LastDiceClicked().GetComponent<Image>().sprite = freezeSprite;
     }
 
 

@@ -6,7 +6,8 @@ using UnityEngine.Events;
 public class DiceType : MonoBehaviour
 {
     public string diceName;
-    public Sprite diceImage;
+    public List<Sprite> freezeSprites;
+    public RuntimeAnimatorController diceAnimator;
     public UnityEvent m_OnStopped;
     public UnityEvent m_OnAttack;
     public UnityEvent m_OnStatusEffect;
@@ -43,9 +44,14 @@ public class DiceType : MonoBehaviour
         return diceName;
     }
 
-    public Sprite GetImage()
+    public RuntimeAnimatorController GetAnimationController()
     {
-        return diceImage;
+        return diceAnimator;
+    }
+
+    public List<Sprite> GetFreezeSprites()
+    {
+        return freezeSprites;
     }
 
     public UnityEvent GetOnStoppedEvent()

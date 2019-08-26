@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ConfirmAttackButton : MonoBehaviour
 {
@@ -55,6 +56,8 @@ public class ConfirmAttackButton : MonoBehaviour
                 {
                     foreach (Character c in targets)
                     {
+                        AudioManager.PlaySound(Resources.Load("Explosions") as AudioClip);
+
                         GameObject effectsAnimator = Utilities.SearchChild("EffectsAnimator", c.gameObject);
                         effectsAnimator.GetComponent<SpriteRenderer>().enabled = true;
                         effectsAnimator.GetComponent<Animator>().enabled = true;
@@ -160,6 +163,17 @@ public class ConfirmAttackButton : MonoBehaviour
         {
             _uiSkinEnemy.SetActive(true);
             _uiEnemy.SetActive(true);
+        }
+
+        for (int i = 0; i < GameObject.Find("DiceCanvas").transform.childCount; i++)
+        {
+            if (GameObject.Find("DiceCanvas").transform.GetChild(i).gameObject.activeInHierarchy)
+            {
+                GameObject.Find("DiceCanvas").transform.GetChild(i).GetComponent<ShakeObject>().Shake();
+                GameObject.Find("DiceCanvas").transform.GetChild(i).GetComponent<Animator>().enabled = true;
+                string questionMarkName = "QuestionMark" + GameObject.Find("DiceCanvas").transform.GetChild(i).name.ToCharArray()[GameObject.Find("DiceCanvas").transform.GetChild(i).name.Length - 1];
+                GameObject.Find(questionMarkName).GetComponent<Image>().enabled = true;
+            }
         }
     }
 }

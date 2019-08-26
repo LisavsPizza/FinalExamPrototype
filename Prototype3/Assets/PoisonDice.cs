@@ -23,6 +23,8 @@ public class PoisonDice : MonoBehaviour
 
         GameObject.Find("ClickTheDice").GetComponent<Text>().text = "DICE VALUES: ";
 
+        FreezeOnRoll(diceRoll);
+
         if (DiceManager.PPFound() == false)
         {
 
@@ -60,6 +62,27 @@ public class PoisonDice : MonoBehaviour
                 poison.GetComponent<Poison>().AddPoison(poisonTotal);
             }
         }
+    }
+
+    private void FreezeOnRoll(int num)
+    {
+        Dice.LastDiceClicked().GetComponent<Animator>().enabled = false;
+
+        DiceType myDiceType = DiceManager.SearchDiceType("Poison");
+
+        List<Sprite> freezeSprites = myDiceType.GetFreezeSprites();
+
+        Sprite freezeSprite = null;
+
+        foreach (Sprite s in freezeSprites)
+        {
+            if (s.name.Contains(num.ToString()))
+            {
+                freezeSprite = s;
+            }
+        }
+
+        Dice.LastDiceClicked().GetComponent<Image>().sprite = freezeSprite;
     }
 
 }

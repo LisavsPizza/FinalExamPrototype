@@ -69,6 +69,8 @@ public class Poison : MonoBehaviour
 
             healthBar.GetComponent<HealthBar>().ChangeHealth(-poisonCount);
 
+            Utilities.SearchChild("PoisonDamageIndicator", this.transform.parent.gameObject).GetComponent<PoisonDamageIndicator>().ShowPoisonDamage(-poisonCount);
+
             //Divide poison damage by two, rounded down to smallest integer
             float poisonCountFloat = (float)poisonCount;
 

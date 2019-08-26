@@ -24,6 +24,8 @@ public class MultiplierDice : MonoBehaviour
 
         GameObject.Find("ClickTheDice").GetComponent<Text>().text = "DICE VALUES: ";
 
+        FreezeOnRoll(diceRoll);
+
         if (DiceManager.APFound() == false)
         {
 
@@ -57,5 +59,25 @@ public class MultiplierDice : MonoBehaviour
         DiceManager.FindTypeTotalGameObject("AP").transform.GetChild(0).GetComponent<Text>().text = attackTotal.ToString();
     }
 
+    private void FreezeOnRoll(int num)
+    {
+        Dice.LastDiceClicked().GetComponent<Animator>().enabled = false;
+
+        DiceType myDiceType = DiceManager.SearchDiceType("Multiplier");
+
+        List<Sprite> freezeSprites = myDiceType.GetFreezeSprites();
+
+        Sprite freezeSprite = null;
+
+        foreach (Sprite s in freezeSprites)
+        {
+            if (s.name.Contains(num.ToString()))
+            {
+                freezeSprite = s;
+            }
+        }
+
+        Dice.LastDiceClicked().GetComponent<Image>().sprite = freezeSprite;
+    }
 
 }

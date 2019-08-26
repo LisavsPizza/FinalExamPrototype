@@ -11,11 +11,14 @@ public class CustomButton : MonoBehaviour
     public Color onMouseDown;
     public Color disabled;
 
+    private Color _originalColor;
     private bool _disabled;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        _originalColor = this.GetComponent<SpriteRenderer>().color;
+
         if (m_OnButtonDown == null)
         {
             m_OnButtonDown = new UnityEvent();
@@ -40,7 +43,7 @@ public class CustomButton : MonoBehaviour
     {
         if (!_disabled)
         {
-            this.GetComponent<SpriteRenderer>().color = Color.white;
+            this.GetComponent<SpriteRenderer>().color = _originalColor;
         }
     }
 
@@ -62,6 +65,6 @@ public class CustomButton : MonoBehaviour
     public void Enable()
     {
         _disabled = false;
-        this.GetComponent<SpriteRenderer>().color = Color.white;
+        this.GetComponent<SpriteRenderer>().color = _originalColor;
     }
 }

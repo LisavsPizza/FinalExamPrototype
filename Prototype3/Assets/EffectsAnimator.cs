@@ -18,6 +18,7 @@ public class EffectsAnimator : MonoBehaviour
 
     void StopEffects()
     {
+        this.GetComponent<SpriteRenderer>().enabled = false;
         this.GetComponent<Animator>().enabled = false;
     }
 }
